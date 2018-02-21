@@ -20,6 +20,3 @@ class LoopTracker:
             dt = time.time() - self.start_time
             print('Loop Completion : {0}%, Remaining Time : {1}s'.format(
                 self.completion, int(dt/(i+1)*(self.nb_iterations-i))))
-
-    def f(self):
-        pass
