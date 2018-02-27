@@ -11,7 +11,7 @@ class ScriptLogger:
         if not var in self.buffer.keys():
             self.buffer[var] = []
         self.buffer[var].append(value)
-        self.forward(var, value) #to say that we are updating var with value
+        self.forward.log(var, value) #to say that we are updating var with value
 
 
     def read_buffer(self, var):

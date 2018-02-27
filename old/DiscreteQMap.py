@@ -1,5 +1,6 @@
 import numpy as np
-from phazcodelib.rll.QLearning import Grid
+from old import Grid
+
 
 def tpl(l):
     if isinstance(l, tuple) or isinstance(l, list):

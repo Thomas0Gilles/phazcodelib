@@ -1,4 +1,4 @@
-from phazcodelib.rll.QLearning import QLearner
+from old import QLearner
 
 
 class SarsaLearner(QLearner):
