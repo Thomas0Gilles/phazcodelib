@@ -11,9 +11,13 @@ class Agent:
     def act(self, state, explore):
         raise NotImplementedError
 
-    def update(self):
+    def step_update(self, state, action, new_state, reward):
+        # updates knowledge each time an action is taken
+        pass
+
+    def episode_update(self):
         # update inner knowledge based on log
-        raise NotImplementedError
+        pass
 
     def episode(self, state, explore=True, display=False):
         total_reward = 0
@@ -21,6 +25,7 @@ class Agent:
         while not done:
             action = self.act(state, explore)
             new_state, reward, done, info = self.env.step(action)
+            self.step_update(state, action, new_state, reward)
             self.log.append(dict(state=state, action=action, reward=reward))
             state = new_state
             total_reward += reward
@@ -31,7 +36,7 @@ class Agent:
     def train(self, nb_episodes=1000, script_logger=None):
         for i in range(nb_episodes):
             reward = self.episode(self.env.reset())
-            self.update()
+            self.episode_update()
             if script_logger:
                 script_logger.log('Rewards', reward)
 

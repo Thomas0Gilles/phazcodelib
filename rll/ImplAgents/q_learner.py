@@ -1,5 +1,5 @@
-from phazcodelib.rll.QLearning import SpaceGrid
-from phazcodelib.rll.Agent import Agent
+from phazcodelib.rll import SpaceGrid
+from phazcodelib.rll import Agent
 from phazcodelib.utils import ndargmax
 import gym
 import numpy as np
@@ -29,23 +29,21 @@ class QLearner(Agent):
             return self.env.action_space.sample()  # random !
         return best_action
 
-    def update(self):
-        for i in range(len(self.log) - 1):
-            state, action = self.log[i]['state'], self.log[i]['action']
-            new_state, reward = self.log[i+1]['state'], self.log[i]['reward']
-            self.Q[state, action] = (1 - self.alpha) * self.Q[state, action] \
-                + self.alpha * (reward + self.gamma * np.argmax(self.Q[state]))
+    def step_update(self, state, action, new_state, reward):
+        self.Q[state, action] = (1 - self.alpha) * self.Q[state, action] \
+            + self.alpha * (reward + self.gamma * np.argmax(self.Q[state]))
+        return None
+
+    def episode_update(self):
         self.log = []
         self.epsilon *= 0.997
-        return None
 
 
 class SarsaLearner(QLearner):
-    def update(self):
-        for i in range(len(self.log)-1):
-            reward = self.log[i]['reward']
-            state, action = self.log[i]['state'], self.log[i]['action']
-            new_state, new_action = self.log[i+1]['state'], self.log[i+1]['action']
-            d = reward + self.gamma*self.Q[new_state, new_action] - self.Q[state, action]
+    def step_update(self):
+        if len(self.log) > 1:
+            reward = self.log[-2]['reward']
+            state, action = self.log[-2]['state'], self.log[-2]['action']
+            new_state, new_action = self.log[-1]['state'], self.log[-1]['action']
+            d = reward + self.gamma * self.Q[new_state, new_action] - self.Q[state, action]
             self.Q[state, action] += self.alpha * d
-        return None

@@ -1,6 +1,6 @@
 from old import DiscreteQMap, Grid
 from phazcodelib.rll.QLearning import gymspace_to_grid
-from phazcodelib.rll.Agent import Agent
+from phazcodelib.rll.AgentInterface import Agent
 import gym
 
 
